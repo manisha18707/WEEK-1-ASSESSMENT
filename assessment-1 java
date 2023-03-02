@@ -1,0 +1,63 @@
+#reverse substrings in a paragraph using recursion in java
+import java.io.*;
+import java.util.*;
+ 
+class paragraph {
+static void reverseWords(String str)
+{
+    Stack<Character> st=new Stack<Character>();
+    for (int i = 0; i < str.length(); ++i) {
+        if (str.charAt(i) != ' ')
+            st.push(str.charAt(i));
+        else {
+            while (st.empty() == false) {
+                System.out.print(st.pop());
+                 
+            }
+            System.out.print(" ");
+        }
+    }
+    while (st.empty() == false) {
+        System.out.print(st.pop());
+         
+    }
+}
+public static void main(String[] args)
+{
+   Scanner sc=new Scanner(System.in);  
+   String str= sc.nextLine();   
+    reverseWords(str);
+  }
+}
+
+
+#reverse of substrings in a paragraph using multithreading in java
+import java.util.Arrays;
+import java.util.concurrent.ExecutorService;
+import java.util.concurrent.Executors;
+
+public class ReverseParagraph {
+    public static void main(String[] args) {
+        String inputParagraph = "Hello world, this is a test paragraph.";
+        String outputParagraph = reverseParagraph(inputParagraph);
+        System.out.println(outputParagraph);
+    }
+
+    public static String reverseParagraph(String paragraph) {
+        String[] words = paragraph.split(" ");
+        int numThreads = Runtime.getRuntime().availableProcessors();
+        ExecutorService executor = Executors.newFixedThreadPool(numThreads);
+        for (int i = 0; i < words.length; i++) {
+            final int index = i;
+            executor.execute(() -> {
+                String reversedWord = new StringBuilder(words[index]).reverse().toString();
+                words[index] = reversedWord;
+            });
+        }
+        executor.shutdown();
+        while (!executor.isTerminated()) {
+            // Wait for all threads to finish
+        }
+        return String.join(" ", words);
+    }
+}
